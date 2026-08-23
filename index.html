@@ -228,7 +228,6 @@
     const selectStatus = document.getElementById('status');
     const grupoAcomp = document.getElementById('grupoAcompanhantes');
 
-    // Alterna o campo dependendo da quantidade de pessoas
     selectAcomp.addEventListener('change', function() {
       if (this.value !== "1 (Apenas eu)") {
         labelDinamico.innerText = "Nome dos Acompanhantes *";
@@ -241,7 +240,6 @@
       }
     });
 
-    // Se a pessoa marcar que não vai, oculta a quantidade de acompanhantes
     selectStatus.addEventListener('change', function() {
       if (this.value === "Infelizmente não poderei") {
         grupoAcomp.style.display = "none";
@@ -277,7 +275,7 @@
           method: 'POST',
           mode: 'no-cors',
           headers: {
-            'Content-Type': 'text/plain;charset=utf-8',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(dados)
         });
