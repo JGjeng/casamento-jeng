@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Casamento JENG | Jênnifer & Guilherme</title>
   
-  <!-- Fontes Elegantes do Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -27,7 +27,6 @@
       color: #3e3835;
     }
 
-    /* Contêiner Proporção 9:16 */
     .mobile-frame {
       width: 100%;
       max-width: 420px;
@@ -56,7 +55,6 @@
       flex: 1;
     }
 
-    /* Cabeçalho */
     .header {
       text-align: center;
       margin-bottom: 20px;
@@ -85,9 +83,8 @@
       color: #63544c;
     }
 
-    /* Cartão do Formulário */
     .form-card {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(6px);
       border-radius: 16px;
       padding: 20px 18px;
@@ -140,103 +137,12 @@
       text-transform: uppercase;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(109, 91, 79, 0.3);
+      transition: opacity 0.2s;
     }
 
-    .btn-submit:active {
-      transform: scale(0.98);
-    }
-
-    /* Modal / Painel Admin */
-    .admin-link {
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    .admin-link button {
-      background: none;
-      border: none;
-      font-size: 0.7rem;
-      color: #8c7e75;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 100;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-
-    .modal-content {
-      background: #fff;
-      width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .modal-header h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .table-container {
-      overflow-y: auto;
-      flex: 1;
-      margin-bottom: 12px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.75rem;
-    }
-
-    th, td {
-      padding: 8px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-    }
-
-    th {
-      background: #f7f4ef;
-      font-weight: 600;
-      position: sticky;
-      top: 0;
-    }
-
-    .btn-export {
-      background-color: #3b6e4c;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.8rem;
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .success-msg {
@@ -258,15 +164,13 @@
   <div class="mobile-frame">
     <div class="content">
       
-      <!-- Cabeçalho -->
       <header class="header">
         <span class="subtitle">Confirmação de Presença</span>
         <h1>Casamento JENG</h1>
         <div class="names">Jênnifer &amp; Guilherme</div>
       </header>
 
-      <!-- Formulário RSVP -->
-      <div class="form-card" id="cardFormulario">
+      <div class="form-card">
         <form id="rsvpForm">
           <div class="form-group">
             <label for="nome">Nome Completo *</label>
@@ -298,152 +202,59 @@
           </div>
 
           <div class="form-group">
-            <label for="restricao">Restrição Alimentar ou Observação</label>
-            <input type="text" id="restricao" placeholder="Ex: vegetariano, alergia a glúten...">
-          </div>
-
-          <div class="form-group">
             <label for="recado">Deixe um recado aos noivos</label>
-            <textarea id="recado" rows="2" placeholder="Uma mensagem de carinho..."></textarea>
+            <textarea id="recado" rows="3" placeholder="Uma mensagem de carinho..."></textarea>
           </div>
 
-          <button type="submit" class="btn-submit">Confirmar</button>
+          <button type="submit" id="btnSubmit" class="btn-submit">Confirmar</button>
         </form>
 
         <div class="success-msg" id="msgSucesso">
           <h3>Obrigado!</h3>
-          <p>Sua resposta foi registrada com sucesso.</p>
+          <p>Sua confirmação foi enviada com sucesso aos noivos.</p>
         </div>
       </div>
 
-      <!-- Acesso Admin -->
-      <div class="admin-link">
-        <button onclick="acessarAdmin()">Acesso Administrativo</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Modal Admin -->
-  <div class="modal" id="adminModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Confirmados (<span id="totalRespostas">0</span>)</h2>
-        <button class="close-btn" onclick="fecharAdmin()">&times;</button>
-      </div>
-
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Status</th>
-              <th>Pessoas</th>
-              <th>WhatsApp</th>
-              <th>Restrição</th>
-              <th>Recado</th>
-            </tr>
-          </thead>
-          <tbody id="listaRespostas">
-            <!-- Dados inseridos via JS -->
-          </tbody>
-        </table>
-      </div>
-
-      <div style="display: flex; gap: 8px; justify-content: flex-end;">
-        <button class="btn-export" onclick="exportarCSV()">Baixar Planilha (CSV)</button>
-        <button class="btn-export" style="background-color: #8c4a4a;" onclick="limparDados()">Limpar Tudo</button>
-      </div>
     </div>
   </div>
 
   <script>
-    const SENHA_ADMIN = "jeng2026"; // Altere a senha aqui
+    const URL_DO_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbzoygexN5GiugZwbJgNsqvMXwI5jGrLWUcpgwk8pHRnIpDSGVRAO9ta-US9_MbdGzg-/exec";
 
-    // Envio do formulário
-    document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+    document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const resposta = {
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled = true;
+      btn.innerText = "Enviando...";
+
+      const dados = {
         dataHora: new Date().toLocaleString('pt-BR'),
         nome: document.getElementById('nome').value.trim(),
         whatsapp: document.getElementById('whatsapp').value.trim(),
         status: document.getElementById('status').value,
         acompanhantes: document.getElementById('acompanhantes').value,
-        restricao: document.getElementById('restricao').value.trim() || 'Nenhuma',
         recado: document.getElementById('recado').value.trim() || '-'
       };
 
-      const lista = JSON.parse(localStorage.getItem('rsvp_jeng') || '[]');
-      lista.push(resposta);
-      localStorage.setItem('rsvp_jeng', JSON.stringify(lista));
+      try {
+        await fetch(URL_DO_GOOGLE_SCRIPT, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dados)
+        });
 
-      document.getElementById('rsvpForm').style.display = 'none';
-      document.getElementById('msgSucesso').style.display = 'block';
+        document.getElementById('rsvpForm').style.display = 'none';
+        document.getElementById('msgSucesso').style.display = 'block';
+      } catch (err) {
+        alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");
+        btn.disabled = false;
+        btn.innerText = "Confirmar";
+      }
     });
-
-    // Painel Admin
-    function acessarAdmin() {
-      const senha = prompt("Digite a senha de administrador:");
-      if (senha === SENHA_ADMIN) {
-        carregarTabela();
-        document.getElementById('adminModal').style.display = 'flex';
-      } else if (senha !== null) {
-        alert("Senha incorreta!");
-      }
-    }
-
-    function fecharAdmin() {
-      document.getElementById('adminModal').style.display = 'none';
-    }
-
-    function carregarTabela() {
-      const lista = JSON.parse(localStorage.getItem('rsvp_jeng') || '[]');
-      const tbody = document.getElementById('listaRespostas');
-      document.getElementById('totalRespostas').innerText = lista.length;
-      tbody.innerHTML = '';
-
-      if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Nenhuma confirmação ainda.</td></tr>';
-        return;
-      }
-
-      lista.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${item.nome}</strong></td>
-          <td>${item.status}</td>
-          <td>${item.acompanhantes}</td>
-          <td>${item.whatsapp}</td>
-          <td>${item.restricao}</td>
-          <td>${item.recado}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function exportarCSV() {
-      const lista = JSON.parse(localStorage.getItem('rsvp_jeng') || '[]');
-      if (lista.length === 0) return alert("Não há dados para exportar.");
-
-      let csv = "\uFEFFData/Hora;Nome;WhatsApp;Status;Acompanhantes;Restrições;Recado\n";
-      lista.forEach(r => {
-        csv += `"${r.dataHora}";"${r.nome}";"${r.whatsapp}";"${r.status}";"${r.acompanhantes}";"${r.restricao}";"${r.recado}"\n`;
-      });
-
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'confirmados_casamento_jeng.csv';
-      link.click();
-    }
-
-    function limparDados() {
-      if (confirm("Tem certeza que deseja apagar todos os registros salvos?")) {
-        localStorage.removeItem('rsvp_jeng');
-        carregarTabela();
-      }
-    }
   </script>
 </body>
 </html>
