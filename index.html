@@ -103,6 +103,7 @@
       letter-spacing: 0.5px;
       margin-bottom: 4px;
       color: #554841;
+      transition: color 0.2s;
     }
 
     input, select, textarea {
@@ -173,7 +174,7 @@
         <form id="rsvpForm">
           <div class="form-group">
             <label for="nome">Nome Completo *</label>
-            <input type="text" id="nome" required placeholder="Seu nome">
+            <input type="text" id="nome" required placeholder="Seu nome completo">
           </div>
 
           <div class="form-group">
@@ -190,7 +191,7 @@
             </select>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" id="grupoAcompanhantes">
             <label for="acompanhantes">Nº de Acompanhantes (com você)</label>
             <select id="acompanhantes">
               <option value="1 (Apenas eu)">1 (Apenas eu)</option>
@@ -200,9 +201,10 @@
             </select>
           </div>
 
-          <div class="form-group">
-            <label for="recado">Deixe um recado aos noivos</label>
-            <textarea id="recado" rows="3" placeholder="Uma mensagem de carinho..."></textarea>
+          <!-- Campo dinâmico: Recado OU Acompanhantes -->
+          <div class="form-group" id="grupoDinamico">
+            <label for="campoDinamico" id="labelDinamico">Deixe um recado aos noivos</label>
+            <textarea id="campoDinamico" rows="3" placeholder="Uma mensagem de carinho..."></textarea>
           </div>
 
           <button type="submit" id="btnSubmit" class="btn-submit">Confirmar</button>
@@ -220,6 +222,38 @@
   <script>
     const URL_DO_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbzoygexN5GiugZwbJgNsqvMXwI5jGrLWUcpgwk8pHRnIpDSGVRAO9ta-US9_MbdGzg-/exec";
 
+    const selectAcomp = document.getElementById('acompanhantes');
+    const labelDinamico = document.getElementById('labelDinamico');
+    const inputDinamico = document.getElementById('campoDinamico');
+    const selectStatus = document.getElementById('status');
+    const grupoAcomp = document.getElementById('grupoAcompanhantes');
+
+    // Alterna o campo dependendo da quantidade de pessoas
+    selectAcomp.addEventListener('change', function() {
+      if (this.value !== "1 (Apenas eu)") {
+        labelDinamico.innerText = "Nome dos Acompanhantes *";
+        inputDinamico.placeholder = "Ex: Nome e sobrenome de cada pessoa...";
+        inputDinamico.required = true;
+      } else {
+        labelDinamico.innerText = "Deixe um recado aos noivos";
+        inputDinamico.placeholder = "Uma mensagem de carinho...";
+        inputDinamico.required = false;
+      }
+    });
+
+    // Se a pessoa marcar que não vai, oculta a quantidade de acompanhantes
+    selectStatus.addEventListener('change', function() {
+      if (this.value === "Infelizmente não poderei") {
+        grupoAcomp.style.display = "none";
+        labelDinamico.innerText = "Deixe um recado aos noivos";
+        inputDinamico.placeholder = "Deixe uma mensagem aos noivos...";
+        inputDinamico.required = false;
+      } else {
+        grupoAcomp.style.display = "block";
+        selectAcomp.dispatchEvent(new Event('change'));
+      }
+    });
+
     document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -227,13 +261,15 @@
       btn.disabled = true;
       btn.innerText = "Enviando...";
 
+      const totalPessoas = selectStatus.value === "Infelizmente não poderei" ? "0" : selectAcomp.value;
+
       const dados = {
         dataHora: new Date().toLocaleString('pt-BR'),
         nome: document.getElementById('nome').value.trim(),
         whatsapp: document.getElementById('whatsapp').value.trim(),
-        status: document.getElementById('status').value,
-        acompanhantes: document.getElementById('acompanhantes').value,
-        recado: document.getElementById('recado').value.trim() || '-'
+        status: selectStatus.value,
+        acompanhantes: totalPessoas,
+        recado: inputDinamico.value.trim() || '-'
       };
 
       try {
